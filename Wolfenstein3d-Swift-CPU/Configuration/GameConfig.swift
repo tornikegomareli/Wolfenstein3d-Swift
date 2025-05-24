@@ -20,7 +20,7 @@ struct GameConfig {
   
   struct Camera {
     static let planeX: Double = 0.0
-    static let planeY: Double = 0.66 // FOV
+    static let planeY: Double = 0.66
   }
   
   struct Input {
