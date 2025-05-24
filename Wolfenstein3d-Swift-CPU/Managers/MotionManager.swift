@@ -1,5 +1,5 @@
 //
-//  MotionManagerDelegate.swift
+//  MotionManager.swift
 //  Wolfenstein3d-Swift-CPU
 //
 //  Created by Tornike Gomareli on 24.05.25.
