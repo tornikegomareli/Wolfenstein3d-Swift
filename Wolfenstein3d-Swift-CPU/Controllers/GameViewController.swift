@@ -1,11 +1,3 @@
-//
-//  GameViewController.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
 // Controllers/GameViewController.swift
 import UIKit
 
@@ -14,10 +6,10 @@ class GameViewController: UIViewController {
   
   private var gameView: GameView!
   private var joystick: JoystickView!
+  private var touchLookView: TouchLookView!
   
   private var gameEngine: GameEngine!
   private var inputManager: InputManager!
-  private var motionManager: MotionManager!
   private var gameState: GameState!
   
   private var debugLabel: UILabel?
@@ -34,6 +26,7 @@ class GameViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     positionJoystick()
+    positionTouchLookView()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -61,10 +54,6 @@ class GameViewController: UIViewController {
     // Create input manager
     inputManager = InputManager()
     inputManager.delegate = gameEngine
-    
-    // Create motion manager
-    motionManager = MotionManager()
-    motionManager.delegate = self
   }
   
   private func setupUI() {
@@ -75,8 +64,9 @@ class GameViewController: UIViewController {
     gameView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     view.addSubview(gameView)
     
-    // Setup joystick
+    // Setup controls
     setupJoystick()
+    setupTouchLookView()
     
     // Setup debug label (optional)
     setupDebugLabel()
@@ -90,6 +80,13 @@ class GameViewController: UIViewController {
     joystick = JoystickView(frame: CGRect(x: 0, y: 0, width: size, height: size))
     joystick.delegate = self
     view.addSubview(joystick)
+  }
+  
+  private func setupTouchLookView() {
+    touchLookView = TouchLookView(frame: view.bounds)
+    touchLookView.delegate = self
+    touchLookView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    view.insertSubview(touchLookView, belowSubview: joystick)
   }
   
   private func setupDebugLabel() {
@@ -112,16 +109,19 @@ class GameViewController: UIViewController {
     joystick.frame = CGRect(x: x, y: y, width: size, height: size)
   }
   
+  private func positionTouchLookView() {
+    // Touch look view covers the entire screen
+    touchLookView?.frame = view.bounds
+  }
+  
   // MARK: - Game Control
   
   private func startGame() {
     gameEngine.start()
-    motionManager.startTracking()
   }
   
   private func stopGame() {
     gameEngine.stop()
-    motionManager.stopTracking()
   }
   
   // MARK: - Orientation
@@ -179,11 +179,11 @@ extension GameViewController: JoystickDelegate {
   }
 }
 
-// MARK: - MotionManagerDelegate
+// MARK: - TouchLookDelegate
 
-extension GameViewController: MotionManagerDelegate {
-  func motionManager(_ manager: MotionManager, didUpdateRotation angle: Double) {
-    inputManager.processGyroscopeRotation(angle: angle)
+extension GameViewController: TouchLookDelegate {
+  func touchLookDidMove(deltaX: CGFloat, deltaY: CGFloat) {
+    inputManager.processTouchLook(deltaX: deltaX, deltaY: deltaY)
   }
 }
 
