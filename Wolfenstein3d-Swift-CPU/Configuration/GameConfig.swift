@@ -35,5 +35,6 @@ struct GameConfig {
     static let joystickKnobSize: CGFloat = 60
     static let joystickPadding: CGFloat = 50
     static let joystickAlpha: CGFloat = 0.5
+    static let lookSensitivity: CGFloat = 0.005
   }
 }
