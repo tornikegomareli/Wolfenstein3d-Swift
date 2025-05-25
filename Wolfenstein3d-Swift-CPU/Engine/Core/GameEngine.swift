@@ -16,13 +16,14 @@ protocol GameEngineDelegate: AnyObject {
 }
 
 class GameEngine: GameEngineProtocol {
-  // MARK: - Properties
-  
   weak var delegate: GameEngineDelegate?
   
   private let renderEngine: RenderEngineProtocol
   private let collisionDetector: CollisionDetectorProtocol
   private let gameState: GameState
+  
+  private var frameTimer = CACurrentMediaTime()
+  private var frameCount = 0
   
   private var displayLink: CADisplayLink?
   private(set) var isRunning = false
@@ -76,6 +77,14 @@ class GameEngine: GameEngineProtocol {
     // Render frame
     if let image = renderEngine.render(player: gameState.player, map: gameState.map) {
       delegate?.gameEngine(self, didRenderFrame: image)
+    }
+    
+    frameCount += 1
+    let now = CACurrentMediaTime()
+    if now - frameTimer >= 1.0 {
+      print("FPS: \(frameCount)")
+      frameCount = 0
+      frameTimer = now
     }
   }
 }
