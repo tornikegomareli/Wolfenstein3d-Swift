@@ -1,11 +1,3 @@
-//
-//  Renderer.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
 // Engine/Rendering/Renderer.swift
 import UIKit
 
@@ -13,6 +5,7 @@ struct RaycastResult {
   let wallDistance: Double
   let wallType: Int
   let side: Int // 0 = NS, 1 = EW
+  let wallX: Double // Where exactly the wall was hit [0.0, 1.0]
 }
 
 class Renderer {
@@ -21,6 +14,7 @@ class Renderer {
   private let frameBuffer: FrameBuffer
   private let screenWidth: Int
   private let screenHeight: Int
+  private let textureManager = TextureManager.shared
   
   // MARK: - Initialization
   
@@ -39,7 +33,12 @@ class Renderer {
     // Render each column
     for x in 0..<screenWidth {
       let rayResult = castRay(screenX: x, player: player, map: map)
-      renderColumn(x: x, rayResult: rayResult)
+      
+      if RenderConfig.Rendering.useTextures {
+        renderTexturedColumn(x: x, rayResult: rayResult)
+      } else {
+        renderColoredColumn(x: x, rayResult: rayResult)
+      }
     }
     
     return frameBuffer.generateImage()
@@ -111,18 +110,95 @@ class Renderer {
     
     // Calculate perpendicular distance
     let perpWallDist: Double
+    let wallX: Double
+    
     if side == 0 {
       perpWallDist = (Double(mapX) - player.x + Double(1 - stepX) / 2.0) / rayDirX
+      wallX = player.y + perpWallDist * rayDirY
     } else {
       perpWallDist = (Double(mapY) - player.y + Double(1 - stepY) / 2.0) / rayDirY
+      wallX = player.x + perpWallDist * rayDirX
     }
     
-    return RaycastResult(wallDistance: perpWallDist, wallType: wallType, side: side)
+    // Get fractional part of wallX for texture coordinate
+    let wallXFraction = wallX - floor(wallX)
+    
+    return RaycastResult(
+      wallDistance: perpWallDist,
+      wallType: wallType,
+      side: side,
+      wallX: wallXFraction
+    )
   }
   
-  // MARK: - Column Rendering
+  // MARK: - Textured Column Rendering
   
-  private func renderColumn(x: Int, rayResult: RaycastResult) {
+  private func renderTexturedColumn(x: Int, rayResult: RaycastResult) {
+    // Calculate line height
+    let lineHeight: Int
+    if rayResult.wallDistance > RenderConfig.Rendering.minWallDistance {
+      lineHeight = Int(Double(screenHeight) / rayResult.wallDistance)
+    } else {
+      lineHeight = screenHeight
+    }
+    
+    // Calculate draw positions
+    let drawStart = max(0, -lineHeight / 2 + screenHeight / 2)
+    let drawEnd = min(screenHeight - 1, lineHeight / 2 + screenHeight / 2)
+    
+    // Get texture for this wall type
+    guard let texture = textureManager.texture(for: rayResult.wallType) else {
+      // Fallback to colored rendering if no texture
+      renderColoredColumn(x: x, rayResult: rayResult)
+      return
+    }
+    
+    // Calculate texture coordinate
+    let texX = rayResult.wallX
+    
+    // Draw ceiling
+    for y in 0..<drawStart {
+      frameBuffer.setPixel(x: x, y: y, color: RenderConfig.Colors.ceiling)
+    }
+    
+    // Draw textured wall
+    let wallHeight = drawEnd - drawStart + 1
+    if wallHeight > 0 {
+      let step = 1.0 / Double(lineHeight)
+      let texStartY = (Double(drawStart) - Double(screenHeight) / 2.0 + Double(lineHeight) / 2.0) * step
+      
+      for y in drawStart...drawEnd {
+        let texY = texStartY + Double(y - drawStart) * step
+        var color = texture.sample(u: texX, v: texY)
+        
+        // Apply shading for side walls
+        if rayResult.side == 1 {
+          // Darken the color
+          let r = (color >> 16) & 0xFF
+          let g = (color >> 8) & 0xFF
+          let b = color & 0xFF
+          let a = (color >> 24) & 0xFF
+          
+          let darkenedR = r / 2
+          let darkenedG = g / 2
+          let darkenedB = b / 2
+          
+          color = (a << 24) | (darkenedR << 16) | (darkenedG << 8) | darkenedB
+        }
+        
+        frameBuffer.setPixel(x: x, y: y, color: color)
+      }
+    }
+    
+    // Draw floor
+    for y in (drawEnd + 1)..<screenHeight {
+      frameBuffer.setPixel(x: x, y: y, color: RenderConfig.Colors.floor)
+    }
+  }
+  
+  // MARK: - Colored Column Rendering (Fallback)
+  
+  private func renderColoredColumn(x: Int, rayResult: RaycastResult) {
     // Calculate line height
     let lineHeight: Int
     if rayResult.wallDistance > RenderConfig.Rendering.minWallDistance {
