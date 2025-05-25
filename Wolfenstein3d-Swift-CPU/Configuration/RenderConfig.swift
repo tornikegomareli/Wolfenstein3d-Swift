@@ -40,5 +40,6 @@ struct RenderConfig {
     static let maxRayDistance: Double = 1e30
     static let minWallDistance: Double = 0.0001
     static let wallDarkeningFactor: UInt32 = 0xFF7F7F7F
+    static let useTextures: Bool = true 
   }
 }
