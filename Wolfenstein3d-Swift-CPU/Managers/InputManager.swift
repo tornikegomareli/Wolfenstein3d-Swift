@@ -1,14 +1,8 @@
-//
-//  InputManager.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
+// Managers/InputManager.swift
 import UIKit
 
 class InputManager: InputProviderProtocol {
+  // MARK: - Properties
   
   weak var delegate: InputHandlerProtocol?
   
@@ -16,6 +10,7 @@ class InputManager: InputProviderProtocol {
   private var moveY: CGFloat = 0
   private var isMoving = false
   
+  // MARK: - Public Methods
   
   func processJoystickInput(x: CGFloat, y: CGFloat) {
     moveX = x
@@ -24,6 +19,7 @@ class InputManager: InputProviderProtocol {
     abs(y) > GameConfig.Input.joystickDeadzone
     
     if isMoving {
+      // Y is inverted: joystick up = negative Y, but forward = positive
       delegate?.handleMovement(forward: Double(-moveY), strafe: Double(moveX))
     }
   }
@@ -40,6 +36,18 @@ class InputManager: InputProviderProtocol {
     }
   }
   
+  func processTouchLook(deltaX: CGFloat, deltaY: CGFloat) {
+    // Convert touch delta to rotation
+    // Horizontal movement rotates the player
+    if abs(deltaX) > 0 {
+      delegate?.handleRotation(angle: Double(deltaX))
+    }
+    
+    // Note: deltaY could be used for vertical look if implementing full 3D look
+    // For now, Wolfenstein 3D style only uses horizontal rotation
+  }
+  
+  // MARK: - State Queries
   
   func isPlayerMoving() -> Bool {
     return isMoving
