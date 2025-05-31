@@ -28,6 +28,8 @@ class InputManager: InputProviderProtocol {
     moveX = 0
     moveY = 0
     isMoving = false
+    // Reset movement when joystick is released
+    delegate?.handleMovement(forward: 0, strafe: 0)
   }
   
   func processGyroscopeRotation(angle: Double) {

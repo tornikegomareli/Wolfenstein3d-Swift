@@ -28,6 +28,10 @@ class GameEngine: GameEngineProtocol {
   private var displayLink: CADisplayLink?
   private(set) var isRunning = false
   
+  // Store current movement values
+  private var currentForward: Double = 0
+  private var currentStrafe: Double = 0
+  
   // MARK: - Initialization
   
   init(gameState: GameState) {
@@ -66,6 +70,24 @@ class GameEngine: GameEngineProtocol {
     gameState.frameCount += 1
   }
   
+  private func applyMovement() {
+    // Only apply movement if there is any
+    if abs(currentForward) > 0.01 || abs(currentStrafe) > 0.01 {
+      let (newX, newY) = gameState.player.move(forward: currentForward, strafe: currentStrafe)
+      
+      let currentPos = CGPoint(x: gameState.player.x, y: gameState.player.y)
+      let newPos = CGPoint(x: newX, y: newY)
+      
+      let finalPos = collisionDetector.checkMovement(
+        from: currentPos,
+        to: newPos,
+        in: gameState.map
+      )
+      
+      gameState.player.updatePosition(x: Double(finalPos.x), y: Double(finalPos.y))
+    }
+  }
+  
   // MARK: - Game Loop
   
   @objc private func gameLoop() {
@@ -73,6 +95,9 @@ class GameEngine: GameEngineProtocol {
     
     // Update game state
     update(deltaTime: displayLink?.timestamp ?? 0)
+    
+    // Apply continuous movement if joystick is being held
+    applyMovement()
     
     // Render frame
     if let image = renderEngine.render(player: gameState.player, map: gameState.map) {
@@ -93,18 +118,9 @@ class GameEngine: GameEngineProtocol {
 
 extension GameEngine: InputHandlerProtocol {
   func handleMovement(forward: Double, strafe: Double) {
-    let (newX, newY) = gameState.player.move(forward: forward, strafe: strafe)
-    
-    let currentPos = CGPoint(x: gameState.player.x, y: gameState.player.y)
-    let newPos = CGPoint(x: newX, y: newY)
-    
-    let finalPos = collisionDetector.checkMovement(
-      from: currentPos,
-      to: newPos,
-      in: gameState.map
-    )
-    
-    gameState.player.updatePosition(x: Double(finalPos.x), y: Double(finalPos.y))
+    // Store the movement values to be applied continuously in the game loop
+    currentForward = forward
+    currentStrafe = strafe
   }
   
   func handleRotation(angle: Double) {
