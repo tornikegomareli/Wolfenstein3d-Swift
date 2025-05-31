@@ -20,7 +20,7 @@ class RenderEngine: RenderEngineProtocol {
     self.renderer = Renderer(
       width: RenderConfig.Screen.width,
       height: RenderConfig.Screen.height
-    )
+    )!
   }
   
   // MARK: - RenderEngineProtocol
