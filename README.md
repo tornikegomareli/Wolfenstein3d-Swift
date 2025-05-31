@@ -95,13 +95,3 @@ The renderer is optimized for CPU performance with:
 - Batch pixel operations
 
 Typical performance: 30-60 FPS on modern iOS devices
-
-## Development
-
-The project uses a protocol-oriented architecture with clear separation between:
-- Rendering engine
-- Input handling
-- Game state management
-- UI components
-
-See `CLAUDE.md` for detailed development guidelines.
