@@ -23,7 +23,14 @@ struct Map {
     guard x >= 0, x < width, y >= 0, y < height else {
       return -1
     }
-    return data[x][y]
+    // `data` is stored row-major where the first index represents the
+    // vertical coordinate (y) and the second index represents the horizontal
+    // coordinate (x).  The previous implementation accessed `data[x][y]`,
+    // effectively transposing the map which resulted in incorrect lookups on
+    // non‑square or asymmetric maps.  This also produced subtle rendering
+    // glitches because the collision system queried tiles from unexpected
+    // positions.  Access the array using `y` first to obtain the correct tile.
+    return data[y][x]
   }
   
   func isWall(x: Int, y: Int) -> Bool {
