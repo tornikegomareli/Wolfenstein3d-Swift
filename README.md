@@ -121,19 +121,6 @@ Target performance:
 - iPhone 12+: 60 FPS at native resolution
 - M1 Mac: 120+ FPS at 1920x1080
 
-## Development
-
-The project uses a protocol-oriented architecture with clear separation between:
-- Platform-independent engine (Engine framework)
-- Platform-specific implementations
-- Input handling
-- UI components
-
-See:
-- [PLANNING.md](PLANNING.md) - Architecture details
-- [TASK.md](TASK.md) - Implementation status
-- [CLAUDE.md](CLAUDE.md) - Development guidelines
-
 ## License
 
 This project is for educational purposes, demonstrating raycasting techniques and multi-platform Swift development.
