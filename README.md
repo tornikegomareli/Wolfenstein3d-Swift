@@ -1,97 +1,139 @@
-# Wolfenstein 3D Swift CPU Renderer
+# Wolfenstein 3D Swift (Multi-Platform)
 
-A pure CPU-based raycaster implementation of Wolfenstein 3D style rendering in Swift for iOS.
+A multi-platform Wolfenstein 3D raycasting engine implemented in Swift, supporting both iOS and macOS.
 
 ## Features
 
 - Pure CPU rendering (no GPU acceleration)
+- Multi-platform support (iOS and macOS)
 - Texture mapping support
-- Touch-based controls (joystick + look)
+- Platform-specific controls:
+  - iOS: Touch-based controls (joystick + look)
+  - macOS: Keyboard (WASD) and mouse controls
 - Optimized column-based rendering
 - Real-time FPS display
+
+## Architecture
+
+The project is structured with a clean separation between platform-independent engine code and platform-specific implementations:
+
+### Engine Framework
+- Platform-independent game logic and rendering
+- Software-based raycasting implementation
+- No external dependencies
+
+### Platform Targets
+- **iOS**: Touch controls, gyroscope support
+- **macOS**: Keyboard (WASD) and mouse controls
 
 ## Project Structure
 
 ```
-.
-├── src/                          # Source code
-│   ├── Wolfenstein3d-Swift-CPU/  # Main app source
-│   │   ├── Application/          # App lifecycle
-│   │   ├── Configuration/        # Game settings
-│   │   ├── Controllers/          # View controllers
-│   │   ├── Engine/               # Core rendering engine
-│   │   ├── Managers/             # Input and motion managers
-│   │   ├── Models/               # Game models
-│   │   ├── Resources/            # Maps and assets
-│   │   └── UI/                   # UI components
-│   └── Wolfenstein3d-Swift-CPU.xcodeproj
-├── build.sh                      # Build script
-├── run.sh                        # Run script
-├── CLAUDE.md                     # AI assistant instructions
-└── README.md                     # This file
+Wolfenstein3d-Swift-CPU/
+├── Engine/                        # Shared framework
+│   ├── Core/                      # Game engine, renderer
+│   ├── Models/                    # Game data structures
+│   ├── Rendering/                 # Texture management
+│   ├── Configuration/             # Game settings
+│   └── Protocols/                 # Platform abstractions
+├── Wolfenstein3d-Swift-CPU/       # iOS app
+│   ├── Platform/                  # iOS-specific implementations
+│   └── UI/                        # Touch controls
+└── Wolfenstein3d-Macintosh/       # macOS app
+    └── Platform/                  # macOS-specific implementations
 ```
 
 ## Requirements
 
-- macOS with Xcode installed
-- iOS 13.0+ deployment target
+- Xcode 15.0+
+- macOS 14.0+ (for development)
+- iOS 15.0+ (deployment target)
+- macOS 12.0+ (deployment target)
 - Swift 5.0+
 
 ## Building
 
-### Using the build script:
-
+### Build All Targets
 ```bash
 # Debug build (default)
-./build.sh
+./build-all.sh
 
 # Release build
-./build.sh --release
+./build-all.sh --release
 
 # Clean and build
-./build.sh --clean
+./build-all.sh --clean
 ```
 
-### Using Xcode:
-
+### Build Specific Target
 ```bash
-open src/Wolfenstein3d-Swift-CPU.xcodeproj
+# iOS
+xcodebuild -project Wolfenstein3d-Swift-CPU.xcodeproj -scheme Wolfenstein3d-Swift-CPU -sdk iphonesimulator build
+
+# macOS
+xcodebuild -project Wolfenstein3d-Swift-CPU.xcodeproj -scheme Wolfenstein3d-Macintosh build
 ```
 
-Then build and run from Xcode.
+### Using Xcode
+```bash
+open Wolfenstein3d-Swift-CPU.xcodeproj
+```
+Then select the desired scheme and build.
 
 ## Running
 
-### Using the run script:
-
+### iOS
 ```bash
 # Run on default simulator (iPhone 15)
-./run.sh
+./run-ios.sh
 
 # Run on specific device
-./run.sh --device "iPhone 14 Pro"
+./run-ios.sh --device "iPad Pro (12.9-inch)"
+```
 
-# List available devices
-./run.sh --list-devices
-
-# Run without building
-./run.sh --no-build
-
-# Run release build
-./run.sh --release
+### macOS
+```bash
+./run-macos.sh
 ```
 
 ## Controls
 
-- **Left Joystick**: Move forward/backward and strafe left/right
-- **Touch and Drag**: Look around (rotate view)
+### iOS
+- **Left Joystick**: Movement (forward/backward/strafe)
+- **Touch & Drag**: Look around
+- **Gyroscope**: Tilt device to look (if available)
+
+### macOS
+- **W/A/S/D**: Movement (forward/left/backward/right)
+- **Arrow Keys**: Turn left/right
+- **Mouse Drag**: Look around
 
 ## Performance
 
 The renderer is optimized for CPU performance with:
+- Direct pixel buffer manipulation
+- Minimal allocations in render loop
+- Platform-specific display synchronization
 - Column-based rendering
 - Texture column caching
-- Pre-calculated reciprocals
-- Batch pixel operations
 
-Typical performance: 30-60 FPS on modern iOS devices
+Target performance:
+- iPhone 12+: 60 FPS at native resolution
+- M1 Mac: 120+ FPS at 1920x1080
+
+## Development
+
+The project uses a protocol-oriented architecture with clear separation between:
+- Platform-independent engine (Engine framework)
+- Platform-specific implementations
+- Input handling
+- UI components
+
+See:
+- [PLANNING.md](PLANNING.md) - Architecture details
+- [TASK.md](TASK.md) - Implementation status
+- [CLAUDE.md](CLAUDE.md) - Development guidelines
+
+## License
+
+This project is for educational purposes, demonstrating raycasting techniques and multi-platform Swift development.
