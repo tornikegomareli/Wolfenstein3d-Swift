@@ -1,12 +1,3 @@
-//
-//  JoystickDelegate.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
-// UI/Views/JoystickView.swift
 import UIKit
 
 protocol JoystickDelegate: AnyObject {
@@ -15,16 +6,12 @@ protocol JoystickDelegate: AnyObject {
 }
 
 class JoystickView: UIView {
-  // MARK: - Properties
-  
   weak var delegate: JoystickDelegate?
   
   private var knobView: UIView!
-  private let knobSize: CGFloat = GameConfig.UI.joystickKnobSize
+  private let knobSize: CGFloat = UIConfig.UI.joystickKnobSize
   private var baseCenter: CGPoint = .zero
   private var isTracking = false
-  
-  // MARK: - Initialization
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -36,10 +23,8 @@ class JoystickView: UIView {
     setupView()
   }
   
-  // MARK: - Setup
-  
   private func setupView() {
-    backgroundColor = UIColor(white: 0.2, alpha: GameConfig.UI.joystickAlpha)
+    backgroundColor = UIColor(white: 0.2, alpha: UIConfig.UI.joystickAlpha)
     layer.cornerRadius = bounds.width / 2
     
     setupKnob()
@@ -54,8 +39,6 @@ class JoystickView: UIView {
     
     baseCenter = knobView.center
   }
-  
-  // MARK: - Touch Handling
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     guard let touch = touches.first else { return }
@@ -78,8 +61,6 @@ class JoystickView: UIView {
     returnToCenter()
   }
   
-  // MARK: - Private Methods
-  
   private func handleTouch(_ touch: UITouch) {
     let location = touch.location(in: self)
     let distance = distanceFrom(baseCenter, to: location)
@@ -95,7 +76,6 @@ class JoystickView: UIView {
       )
     }
     
-    // Calculate normalized values (-1 to 1)
     let normalizedX = (knobView.center.x - baseCenter.x) / maxDistance
     let normalizedY = (knobView.center.y - baseCenter.y) / maxDistance
     

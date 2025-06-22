@@ -1,11 +1,3 @@
-//
-//  TouchLookView.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 25.05.25.
-//
-
-
 import UIKit
 
 protocol TouchLookDelegate: AnyObject {
@@ -17,9 +9,8 @@ class TouchLookView: UIView {
   
   private var lastTouchLocation: CGPoint?
   private var activeTouches: Set<UITouch> = []
-  private let sensitivity: CGFloat = GameConfig.UI.lookSensitivity
+  private let sensitivity: CGFloat = UIConfig.UI.lookSensitivity
   
-  // Visual feedback
   private var touchIndicator: UIView?
   private let indicatorSize: CGFloat = 80
   
@@ -57,14 +48,11 @@ class TouchLookView: UIView {
     
     let currentLocation = touch.location(in: self)
     
-    // Calculate delta movement
     let deltaX = currentLocation.x - lastLocation.x
     let deltaY = currentLocation.y - lastLocation.y
     
-    // Update touch indicator position
     touchIndicator?.center = currentLocation
     
-    // Apply sensitivity and notify delegate
     delegate?.touchLookDidMove(
       deltaX: deltaX * sensitivity,
       deltaY: deltaY * sensitivity
@@ -80,8 +68,6 @@ class TouchLookView: UIView {
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     handleTouchEnd(touches)
   }
-  
-  // MARK: - Private Methods
   
   private func handleTouchEnd(_ touches: Set<UITouch>) {
     for touch in touches {

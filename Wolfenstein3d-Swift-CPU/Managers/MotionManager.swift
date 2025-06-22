@@ -8,6 +8,7 @@
 
 import CoreMotion
 import UIKit
+import Engine
 
 protocol MotionManagerDelegate: AnyObject {
   func motionManager(_ manager: MotionManager, didUpdateRotation angle: Double)

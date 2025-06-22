@@ -1,9 +1,7 @@
-// Controllers/GameViewController.swift
 import UIKit
+import Engine
 
 class GameViewController: UIViewController {
-  // MARK: - Properties
-  
   private var gameView: GameView!
   private var joystick: JoystickView!
   private var touchLookView: TouchLookView!
@@ -11,10 +9,9 @@ class GameViewController: UIViewController {
   private var gameEngine: GameEngine!
   private var inputManager: InputManager!
   private var gameState: GameState!
+  private var platformRenderer: IOSPlatformRenderer!
   
   private var debugLabel: UILabel?
-  
-  // MARK: - Lifecycle
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -39,19 +36,19 @@ class GameViewController: UIViewController {
     stopGame()
   }
   
-  // MARK: - Setup
-  
   private func setupGame() {
-    // Create game state
+    TextureManager.shared.setTextureLoader(IOSTextureLoader())
+    
     let player = Player()
     let map = DefaultMap.createMap()
     gameState = GameState(player: player, map: map)
     
-    // Create game engine
-    gameEngine = GameEngine(gameState: gameState)
+    platformRenderer = IOSPlatformRenderer()
+    
+    let displayLink = IOSDisplayLink()
+    gameEngine = GameEngine(gameState: gameState, displayLink: displayLink)
     gameEngine.delegate = self
     
-    // Create input manager
     inputManager = InputManager()
     inputManager.delegate = gameEngine
   }
@@ -59,24 +56,20 @@ class GameViewController: UIViewController {
   private func setupUI() {
     view.backgroundColor = .black
     
-    // Setup game view
     gameView = GameView(frame: view.bounds)
     gameView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     view.addSubview(gameView)
     
-    // Setup controls
     setupJoystick()
     setupTouchLookView()
     
-    // Setup debug label (optional)
     setupDebugLabel()
     
-    // Update status bar
     setNeedsStatusBarAppearanceUpdate()
   }
   
   private func setupJoystick() {
-    let size = GameConfig.UI.joystickSize
+    let size = UIConfig.UI.joystickSize
     joystick = JoystickView(frame: CGRect(x: 0, y: 0, width: size, height: size))
     joystick.delegate = self
     view.addSubview(joystick)
@@ -100,8 +93,8 @@ class GameViewController: UIViewController {
   private func positionJoystick() {
     guard let joystick = joystick else { return }
     
-    let padding = GameConfig.UI.joystickPadding
-    let size = GameConfig.UI.joystickSize
+    let padding = UIConfig.UI.joystickPadding
+    let size = UIConfig.UI.joystickSize
     
     let x = view.safeAreaInsets.left + padding
     let y = view.bounds.height - size - view.safeAreaInsets.bottom - padding
@@ -110,11 +103,8 @@ class GameViewController: UIViewController {
   }
   
   private func positionTouchLookView() {
-    // Touch look view covers the entire screen
     touchLookView?.frame = view.bounds
   }
-  
-  // MARK: - Game Control
   
   private func startGame() {
     gameEngine.start()
@@ -123,8 +113,6 @@ class GameViewController: UIViewController {
   private func stopGame() {
     gameEngine.stop()
   }
-  
-  // MARK: - Orientation
   
   override var shouldAutorotate: Bool {
     return true
@@ -151,11 +139,13 @@ class GameViewController: UIViewController {
   }
 }
 
-// MARK: - GameEngineDelegate
-
 extension GameViewController: GameEngineDelegate {
-  func gameEngine(_ engine: GameEngine, didRenderFrame image: UIImage) {
-    gameView.updateFrame(image)
+  typealias ImageType = UIImage
+  
+  func gameEngine(_ engine: GameEngine, didRenderFrame frameBuffer: FrameBuffer) {
+    if let image = platformRenderer.createImage(from: frameBuffer) {
+      gameView.updateFrame(image)
+    }
   }
   
   func gameEngineDidStart(_ engine: GameEngine) {
@@ -167,8 +157,6 @@ extension GameViewController: GameEngineDelegate {
   }
 }
 
-// MARK: - JoystickDelegate
-
 extension GameViewController: JoystickDelegate {
   func joystickDidMove(x: CGFloat, y: CGFloat) {
     inputManager.processJoystickInput(x: x, y: y)
@@ -179,19 +167,14 @@ extension GameViewController: JoystickDelegate {
   }
 }
 
-// MARK: - TouchLookDelegate
-
 extension GameViewController: TouchLookDelegate {
   func touchLookDidMove(deltaX: CGFloat, deltaY: CGFloat) {
     inputManager.processTouchLook(deltaX: deltaX, deltaY: deltaY)
   }
 }
 
-// MARK: - GameStateObserver
-
 extension GameViewController: GameStateObserver {
   func gameStateDidChange(_ state: GameState) {
-    // Handle game state changes if needed
     switch state.status {
     case .running:
       debugLabel?.textColor = .green

@@ -1,20 +1,7 @@
-//
-//  GameView.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
-// UI/GameView.swift
 import UIKit
 
 class GameView: UIView {
-  // MARK: - Properties
-  
   private var imageView: UIImageView!
-  
-  // MARK: - Initialization
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -26,8 +13,6 @@ class GameView: UIView {
     setupView()
   }
   
-  // MARK: - Setup
-  
   private func setupView() {
     backgroundColor = .black
     
@@ -37,8 +22,6 @@ class GameView: UIView {
     imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     addSubview(imageView)
   }
-  
-  // MARK: - Public Methods
   
   func updateFrame(_ image: UIImage) {
     imageView.image = image
