@@ -13,7 +13,7 @@ echo -e "${YELLOW}Building Wolfenstein3d-Swift-CPU...${NC}"
 # Default values
 CONFIGURATION="Debug"
 SCHEME="Wolfenstein3d-Swift-CPU"
-PROJECT_PATH="src/Wolfenstein3d-Swift-CPU.xcodeproj"
+PROJECT_PATH="Wolfenstein3d-Swift-CPU.xcodeproj"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
