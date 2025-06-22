@@ -6,11 +6,69 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E6F02D752E07EFA800516C71 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F02D6D2E07EFA800516C71 /* Engine.framework */; };
+		E6F02D762E07EFA800516C71 /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6F02D6D2E07EFA800516C71 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E6F02D902E07F05900516C71 /* Engine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F02D6D2E07EFA800516C71 /* Engine.framework */; };
+		E6F02D912E07F05900516C71 /* Engine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6F02D6D2E07EFA800516C71 /* Engine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E6F02D732E07EFA800516C71 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6F330D82DE1B7110030ED44 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F02D6C2E07EFA800516C71;
+			remoteInfo = Engine;
+		};
+		E6F02D922E07F05900516C71 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6F330D82DE1B7110030ED44 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6F02D6C2E07EFA800516C71;
+			remoteInfo = Engine;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E6F02D772E07EFA800516C71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E6F02D762E07EFA800516C71 /* Engine.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6F02D942E07F05900516C71 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E6F02D912E07F05900516C71 /* Engine.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		E6F02D6D2E07EFA800516C71 /* Engine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Engine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6F02D802E07EFE000516C71 /* Wolfenstein3d-Macintosh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wolfenstein3d-Macintosh.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6F330E02DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wolfenstein3d-Swift-CPU.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E6F02D7B2E07EFA800516C71 /* Exceptions for "Engine" folder in "Engine" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				Engine.h,
+			);
+			target = E6F02D6C2E07EFA800516C71 /* Engine */;
+		};
 		E6F330F22DE1B7130030ED44 /* Exceptions for "Wolfenstein3d-Swift-CPU" folder in "Wolfenstein3d-Swift-CPU" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -21,6 +79,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		E6F02D6E2E07EFA800516C71 /* Engine */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E6F02D7B2E07EFA800516C71 /* Exceptions for "Engine" folder in "Engine" target */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		E6F02D812E07EFE000516C71 /* Wolfenstein3d-Macintosh */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Wolfenstein3d-Macintosh";
+			sourceTree = "<group>";
+		};
 		E6F330E22DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -32,20 +103,46 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E6F330DD2DE1B7110030ED44 /* Frameworks */ = {
+		E6F02D6A2E07EFA800516C71 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6F02D7D2E07EFE000516C71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6F02D902E07F05900516C71 /* Engine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6F330DD2DE1B7110030ED44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6F02D752E07EFA800516C71 /* Engine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E6F02D8F2E07F05900516C71 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E6F330D72DE1B7110030ED44 = {
 			isa = PBXGroup;
 			children = (
 				E6F330E22DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU */,
+				E6F02D6E2E07EFA800516C71 /* Engine */,
+				E6F02D812E07EFE000516C71 /* Wolfenstein3d-Macintosh */,
+				E6F02D8F2E07F05900516C71 /* Frameworks */,
 				E6F330E12DE1B7110030ED44 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,13 +151,72 @@
 			isa = PBXGroup;
 			children = (
 				E6F330E02DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU.app */,
+				E6F02D6D2E07EFA800516C71 /* Engine.framework */,
+				E6F02D802E07EFE000516C71 /* Wolfenstein3d-Macintosh.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		E6F02D682E07EFA800516C71 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		E6F02D6C2E07EFA800516C71 /* Engine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6F02D7A2E07EFA800516C71 /* Build configuration list for PBXNativeTarget "Engine" */;
+			buildPhases = (
+				E6F02D682E07EFA800516C71 /* Headers */,
+				E6F02D692E07EFA800516C71 /* Sources */,
+				E6F02D6A2E07EFA800516C71 /* Frameworks */,
+				E6F02D6B2E07EFA800516C71 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E6F02D6E2E07EFA800516C71 /* Engine */,
+			);
+			name = Engine;
+			packageProductDependencies = (
+			);
+			productName = Engine;
+			productReference = E6F02D6D2E07EFA800516C71 /* Engine.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E6F02D7F2E07EFE000516C71 /* Wolfenstein3d-Macintosh */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6F02D8C2E07EFE100516C71 /* Build configuration list for PBXNativeTarget "Wolfenstein3d-Macintosh" */;
+			buildPhases = (
+				E6F02D7C2E07EFE000516C71 /* Sources */,
+				E6F02D7D2E07EFE000516C71 /* Frameworks */,
+				E6F02D7E2E07EFE000516C71 /* Resources */,
+				E6F02D942E07F05900516C71 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E6F02D932E07F05900516C71 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E6F02D812E07EFE000516C71 /* Wolfenstein3d-Macintosh */,
+			);
+			name = "Wolfenstein3d-Macintosh";
+			packageProductDependencies = (
+			);
+			productName = "Wolfenstein3d-Macintosh";
+			productReference = E6F02D802E07EFE000516C71 /* Wolfenstein3d-Macintosh.app */;
+			productType = "com.apple.product-type.application";
+		};
 		E6F330DF2DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6F330F32DE1B7130030ED44 /* Build configuration list for PBXNativeTarget "Wolfenstein3d-Swift-CPU" */;
@@ -68,10 +224,12 @@
 				E6F330DC2DE1B7110030ED44 /* Sources */,
 				E6F330DD2DE1B7110030ED44 /* Frameworks */,
 				E6F330DE2DE1B7110030ED44 /* Resources */,
+				E6F02D772E07EFA800516C71 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E6F02D742E07EFA800516C71 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E6F330E22DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU */,
@@ -93,6 +251,12 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					E6F02D6C2E07EFA800516C71 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					E6F02D7F2E07EFE000516C71 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					E6F330DF2DE1B7110030ED44 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -113,11 +277,27 @@
 			projectRoot = "";
 			targets = (
 				E6F330DF2DE1B7110030ED44 /* Wolfenstein3d-Swift-CPU */,
+				E6F02D6C2E07EFA800516C71 /* Engine */,
+				E6F02D7F2E07EFE000516C71 /* Wolfenstein3d-Macintosh */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E6F02D6B2E07EFA800516C71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6F02D7E2E07EFE000516C71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6F330DE2DE1B7110030ED44 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +308,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E6F02D692E07EFA800516C71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6F02D7C2E07EFE000516C71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6F330DC2DE1B7110030ED44 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +331,168 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E6F02D742E07EFA800516C71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F02D6C2E07EFA800516C71 /* Engine */;
+			targetProxy = E6F02D732E07EFA800516C71 /* PBXContainerItemProxy */;
+		};
+		E6F02D932E07F05900516C71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6F02D6C2E07EFA800516C71 /* Engine */;
+			targetProxy = E6F02D922E07F05900516C71 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		E6F02D782E07EFA800516C71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 6SR4JWJD54;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tornike.Engine;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		E6F02D792E07EFA800516C71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 6SR4JWJD54;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tornike.Engine;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		E6F02D8D2E07EFE100516C71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Wolfenstein3d-Macintosh/Wolfenstein3d_Macintosh.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6SR4JWJD54;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tornike.Wolfenstein3d-Macintosh";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E6F02D8E2E07EFE100516C71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Wolfenstein3d-Macintosh/Wolfenstein3d_Macintosh.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6SR4JWJD54;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tornike.Wolfenstein3d-Macintosh";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		E6F330F42DE1B7130030ED44 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -316,6 +671,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E6F02D7A2E07EFA800516C71 /* Build configuration list for PBXNativeTarget "Engine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6F02D782E07EFA800516C71 /* Debug */,
+				E6F02D792E07EFA800516C71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6F02D8C2E07EFE100516C71 /* Build configuration list for PBXNativeTarget "Wolfenstein3d-Macintosh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6F02D8D2E07EFE100516C71 /* Debug */,
+				E6F02D8E2E07EFE100516C71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E6F330DB2DE1B7110030ED44 /* Build configuration list for PBXProject "Wolfenstein3d-Swift-CPU" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

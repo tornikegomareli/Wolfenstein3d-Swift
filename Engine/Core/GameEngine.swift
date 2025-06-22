@@ -1,77 +1,69 @@
-//
-//  GameEngine.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
+import Foundation
 
-
-// Engine/Core/GameEngine.swift
-import UIKit
-
-protocol GameEngineDelegate: AnyObject {
-  func gameEngine(_ engine: GameEngine, didRenderFrame image: UIImage)
+public protocol GameEngineDelegate: AnyObject {
+  associatedtype ImageType
+  func gameEngine(_ engine: GameEngine, didRenderFrame frameBuffer: FrameBuffer)
   func gameEngineDidStart(_ engine: GameEngine)
   func gameEngineDidStop(_ engine: GameEngine)
 }
 
-class GameEngine: GameEngineProtocol {
-  weak var delegate: GameEngineDelegate?
+public class GameEngine: GameEngineProtocol {
+  public weak var delegate: AnyObject?
   
-  private let renderEngine: RenderEngineProtocol
   private let collisionDetector: CollisionDetectorProtocol
   private let gameState: GameState
+  private var displayLink: DisplayLink
+  private let renderer: Renderer
   
-  private var frameTimer = CACurrentMediaTime()
+  private var frameTimer = Date().timeIntervalSince1970
   private var frameCount = 0
   
-  private var displayLink: CADisplayLink?
-  private(set) var isRunning = false
+  public private(set) var isRunning = false
   
-  // Store current movement values
   private var currentForward: Double = 0
   private var currentStrafe: Double = 0
   
-  // MARK: - Initialization
   
-  init(gameState: GameState) {
+  public init(gameState: GameState, displayLink: DisplayLink) {
     self.gameState = gameState
-    self.renderEngine = RenderEngine()
+    self.displayLink = displayLink
     self.collisionDetector = CollisionDetector()
+    self.renderer = Renderer(width: RenderConfig.Screen.width, height: RenderConfig.Screen.height)
   }
   
-  func start() {
+  public func start() {
     guard !isRunning else { return }
     
     isRunning = true
     gameState.status = .running
     
-    displayLink = CADisplayLink(target: self, selector: #selector(gameLoop))
-    displayLink?.add(to: .current, forMode: .default)
+    displayLink.preferredFramesPerSecond = 60
+    displayLink.start(target: self, selector: #selector(gameLoop))
     
-    delegate?.gameEngineDidStart(self)
+    if let delegate = delegate as? any GameEngineDelegate {
+      delegate.gameEngineDidStart(self)
+    }
   }
   
-  func stop() {
+  public func stop() {
     guard isRunning else { return }
     
     isRunning = false
     gameState.status = .stopped
     
-    displayLink?.invalidate()
-    displayLink = nil
+    displayLink.invalidate()
     
-    delegate?.gameEngineDidStop(self)
+    if let delegate = delegate as? any GameEngineDelegate {
+      delegate.gameEngineDidStop(self)
+    }
   }
   
-  func update(deltaTime: TimeInterval) {
-    // Update game state if needed
+  public func update(deltaTime: TimeInterval) {
     gameState.lastUpdateTime = deltaTime
     gameState.frameCount += 1
   }
   
   private func applyMovement() {
-    // Only apply movement if there is any
     if abs(currentForward) > 0.01 || abs(currentStrafe) > 0.01 {
       let (newX, newY) = gameState.player.move(forward: currentForward, strafe: currentStrafe)
       
@@ -88,24 +80,23 @@ class GameEngine: GameEngineProtocol {
     }
   }
   
-  // MARK: - Game Loop
   
   @objc private func gameLoop() {
     guard isRunning else { return }
     
-    // Update game state
-    update(deltaTime: displayLink?.timestamp ?? 0)
+    let currentTime = Date().timeIntervalSince1970
+    update(deltaTime: currentTime)
     
-    // Apply continuous movement if joystick is being held
     applyMovement()
     
-    // Render frame
-    if let image = renderEngine.render(player: gameState.player, map: gameState.map) {
-      delegate?.gameEngine(self, didRenderFrame: image)
+    renderer.render(player: gameState.player, map: gameState.map)
+    
+    if let delegate = delegate as? any GameEngineDelegate {
+      delegate.gameEngine(self, didRenderFrame: renderer.frameBuffer)
     }
     
     frameCount += 1
-    let now = CACurrentMediaTime()
+    let now = Date().timeIntervalSince1970
     if now - frameTimer >= 1.0 {
       print("FPS: \(frameCount)")
       frameCount = 0
@@ -114,16 +105,13 @@ class GameEngine: GameEngineProtocol {
   }
 }
 
-// MARK: - Input Handler
-
 extension GameEngine: InputHandlerProtocol {
-  func handleMovement(forward: Double, strafe: Double) {
-    // Store the movement values to be applied continuously in the game loop
+  public func handleMovement(forward: Double, strafe: Double) {
     currentForward = forward
     currentStrafe = strafe
   }
   
-  func handleRotation(angle: Double) {
+  public func handleRotation(angle: Double) {
     gameState.player.rotate(angle: angle)
   }
 }

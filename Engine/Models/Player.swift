@@ -1,28 +1,19 @@
-//
-//  Player.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
-// Models/Player.swift
 import Foundation
 
-class Player {
-  var x: Double
-  var y: Double
+public class Player {
+  public var x: Double
+  public var y: Double
   
-  var dirX: Double
-  var dirY: Double
+  public var dirX: Double
+  public var dirY: Double
   
-  var planeX: Double
-  var planeY: Double
+  public var planeX: Double
+  public var planeY: Double
   
-  let moveSpeed: Double
-  let rotationSpeed: Double
+  public let moveSpeed: Double
+  public let rotationSpeed: Double
   
-  init() {
+  public init() {
     self.x = GameConfig.Player.initialX
     self.y = GameConfig.Player.initialY
     self.dirX = GameConfig.Player.initialDirX
@@ -33,7 +24,7 @@ class Player {
     self.rotationSpeed = GameConfig.Player.rotationSpeed
   }
   
-  func move(forward: Double, strafe: Double) -> (newX: Double, newY: Double) {
+  public func move(forward: Double, strafe: Double) -> (newX: Double, newY: Double) {
     let moveX = dirX * forward * moveSpeed
     let moveY = dirY * forward * moveSpeed
     
@@ -46,7 +37,7 @@ class Player {
     return (newX, newY)
   }
   
-  func rotate(angle: Double) {
+  public func rotate(angle: Double) {
     let oldDirX = dirX
     dirX = dirX * cos(angle) - dirY * sin(angle)
     dirY = oldDirX * sin(angle) + dirY * cos(angle)
@@ -56,7 +47,7 @@ class Player {
     planeY = oldPlaneX * sin(angle) + planeY * cos(angle)
   }
   
-  func updatePosition(x: Double, y: Double) {
+  public func updatePosition(x: Double, y: Double) {
     self.x = x
     self.y = y
   }

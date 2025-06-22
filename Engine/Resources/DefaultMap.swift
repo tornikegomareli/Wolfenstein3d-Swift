@@ -1,16 +1,7 @@
-//
-//  DefaultMap.swift
-//  Wolfenstein3d-Swift-CPU
-//
-//  Created by Tornike Gomareli on 24.05.25.
-//
-
-
-// Resources/Maps/DefaultMap.swift
 import Foundation
 
-struct DefaultMap {
-  static let data: [[Int]] = [
+public struct DefaultMap {
+  public static let data: [[Int]] = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -37,7 +28,7 @@ struct DefaultMap {
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
   ]
   
-  static func createMap() -> Map {
+  public static func createMap() -> Map {
     return Map(data: data)
   }
 }
