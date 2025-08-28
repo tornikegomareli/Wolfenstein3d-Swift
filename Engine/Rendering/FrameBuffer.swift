@@ -79,6 +79,22 @@ public class FrameBuffer {
     }
   }
   
+  /// Fast block fill for performance-critical close wall rendering
+  @inline(__always)
+  public func fillVerticalBlock(x: Int, startY: Int, endY: Int, color: UInt32) {
+    guard x >= 0, x < width else { return }
+    let safeStartY = max(0, startY)
+    let safeEndY = min(height - 1, endY)
+    guard safeStartY <= safeEndY else { return }
+    
+    /// Use pointer arithmetic for maximum speed
+    var ptr = buffer.advanced(by: safeStartY * width + x)
+    for _ in safeStartY...safeEndY {
+      ptr.pointee = color
+      ptr = ptr.advanced(by: width)
+    }
+  }
+  
   
   public func getPixelData() -> [UInt32] {
     return Array(UnsafeBufferPointer(start: buffer, count: pixelCount))
