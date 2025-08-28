@@ -255,47 +255,77 @@ public class Renderer {
   private func renderCloseWallColumn(x: Int, texX: Int, texture: Texture,
                                     drawStart: Int, drawEnd: Int, 
                                     lineHeight: Int, needsDarkening: Bool) {
-    let skipFactor = max(1, lineHeight / (screenHeight * 2))
     let texturePixels = texture.getColumnPixels(x: texX)
+    let textureHeight = texture.height
     
-    let texStepFixed = (texture.height << 16) / lineHeight
-    var texPosFixed = ((drawStart - screenHeight / 2 + lineHeight / 2) * texStepFixed)
-    
-    if needsDarkening {
-      var y = drawStart
-      while y <= drawEnd {
-        let texY = min(texture.height - 1, max(0, texPosFixed >> 16))
-        let color = texturePixels[texY]
-        
+    /// ULTRA-FAST PATH: For extremely close walls, just use a single color
+    /// This is the key optimization - when you're face-to-face with a wall,
+    /// texture detail doesn't matter at all
+    if lineHeight > screenHeight * 10 {
+      /// Sample texture at middle point only
+      let midTexY = textureHeight / 2
+      var color = texturePixels[midTexY]
+      
+      if needsDarkening {
         let r = (color >> 17) & 0x7F
         let g = (color >> 9) & 0x7F
         let b = (color >> 1) & 0x7F
-        let a = color & 0xFF000000
+        color = (color & 0xFF000000) | (r << 16) | (g << 8) | b
+      }
+      
+      /// Single call to fill entire column - maximum performance
+      frameBuffer.fillVerticalBlock(x: x, startY: drawStart, endY: drawEnd, color: color)
+      return
+    }
+    
+    /// FAST PATH: Very close walls - sample only 8 points
+    if lineHeight > screenHeight * 5 {
+      let sampleCount = 8
+      let sectionHeight = (drawEnd - drawStart + 1) / sampleCount
+      
+      var baseY = drawStart
+      for i in 0..<sampleCount {
+        let texIndex = (i * textureHeight) / sampleCount
+        var color = texturePixels[min(textureHeight - 1, texIndex)]
         
-        let darkenedColor = a | (r << 16) | (g << 8) | b
-        
-        let fillEnd = min(drawEnd, y + skipFactor - 1)
-        for fillY in y...fillEnd {
-          frameBuffer.setPixelUnsafe(x: x, y: fillY, color: darkenedColor)
+        if needsDarkening {
+          let r = (color >> 17) & 0x7F
+          let g = (color >> 9) & 0x7F
+          let b = (color >> 1) & 0x7F
+          color = (color & 0xFF000000) | (r << 16) | (g << 8) | b
         }
         
-        y += skipFactor
-        texPosFixed += texStepFixed * skipFactor
+        let blockEnd = (i == sampleCount - 1) ? drawEnd : min(drawEnd, baseY + sectionHeight - 1)
+        frameBuffer.fillVerticalBlock(x: x, startY: baseY, endY: blockEnd, color: color)
+        baseY = blockEnd + 1
       }
-    } else {
-      var y = drawStart
-      while y <= drawEnd {
-        let texY = min(texture.height - 1, max(0, texPosFixed >> 16))
-        let color = texturePixels[texY]
-        
-        let fillEnd = min(drawEnd, y + skipFactor - 1)
-        for fillY in y...fillEnd {
-          frameBuffer.setPixelUnsafe(x: x, y: fillY, color: color)
-        }
-        
-        y += skipFactor
-        texPosFixed += texStepFixed * skipFactor
+      return
+    }
+    
+    /// MODERATE PATH: Close walls - reduced sampling rate
+    let skipFactor = lineHeight > screenHeight * 3 ? 8 : 4
+    let visibleHeight = drawEnd - drawStart + 1
+    let texStep = (textureHeight << 16) / visibleHeight
+    var texPos = 0
+    
+    var y = drawStart
+    while y <= drawEnd {
+      let texY = min(textureHeight - 1, texPos >> 16)
+      var color = texturePixels[texY]
+      
+      if needsDarkening {
+        let r = (color >> 17) & 0x7F
+        let g = (color >> 9) & 0x7F
+        let b = (color >> 1) & 0x7F
+        color = (color & 0xFF000000) | (r << 16) | (g << 8) | b
       }
+      
+      /// Use fast block fill instead of individual pixel sets
+      let blockEnd = min(drawEnd, y + skipFactor - 1)
+      frameBuffer.fillVerticalBlock(x: x, startY: y, endY: blockEnd, color: color)
+      
+      y += skipFactor
+      texPos += texStep * skipFactor
     }
   }
 }
