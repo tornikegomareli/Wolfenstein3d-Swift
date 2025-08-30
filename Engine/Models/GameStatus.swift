@@ -18,6 +18,7 @@ public class GameState: GameStateSubject {
   
   public var player: Player
   public var map: Map
+  public var weapon: Weapon
   public var frameCount: Int = 0
   public var lastUpdateTime: TimeInterval = 0
   
@@ -26,6 +27,7 @@ public class GameState: GameStateSubject {
   public init(player: Player, map: Map) {
     self.player = player
     self.map = map
+    self.weapon = Weapon()
   }
   
   public func addObserver(_ observer: GameStateObserver) {

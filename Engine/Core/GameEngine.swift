@@ -85,11 +85,14 @@ public class GameEngine: GameEngineProtocol {
     guard isRunning else { return }
     
     let currentTime = Date().timeIntervalSince1970
-    update(deltaTime: currentTime)
+    let deltaTime = currentTime - gameState.lastUpdateTime
+    update(deltaTime: deltaTime)
     
     applyMovement()
     
-    renderer.render(player: gameState.player, map: gameState.map)
+    gameState.weapon.update(deltaTime: deltaTime)
+    
+    renderer.render(player: gameState.player, map: gameState.map, weapon: gameState.weapon)
     
     if let delegate = delegate as? any GameEngineDelegate {
       delegate.gameEngine(self, didRenderFrame: renderer.frameBuffer)
@@ -102,6 +105,10 @@ public class GameEngine: GameEngineProtocol {
       frameCount = 0
       frameTimer = now
     }
+  }
+  
+  public func shoot() {
+    gameState.weapon.startShooting()
   }
 }
 

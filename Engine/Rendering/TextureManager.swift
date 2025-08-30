@@ -4,6 +4,7 @@ public class TextureManager {
   public static let shared = TextureManager()
   
   private var textures: [Int: Texture] = [:]
+  private var weaponTextures: [String: Texture] = [:]
   private var textureLoader: TextureLoader?
   
   private init() {}
@@ -36,6 +37,15 @@ public class TextureManager {
     } else {
       print("Warning: Could not load wall2 texture")
     }
+    
+    /// Load weapon sprites
+    for i in 1...5 {
+      let spriteName = "shoot_\(i)"
+      if let weaponImage = loader.loadTexture(named: spriteName),
+         let weaponTexture = Texture(image: weaponImage) {
+        weaponTextures[spriteName] = weaponTexture
+      }
+    }
   }
   
   public func texture(for wallType: Int) -> Texture? {
@@ -50,5 +60,9 @@ public class TextureManager {
       return
     }
     textures[wallType] = texture
+  }
+  
+  public func weaponTexture(name: String) -> Texture? {
+    return weaponTextures[name]
   }
 }
