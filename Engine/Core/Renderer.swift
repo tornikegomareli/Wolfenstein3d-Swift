@@ -26,7 +26,7 @@ public class Renderer {
   }
   
   
-  public func render(player: Player, map: Map) {
+  public func render(player: Player, map: Map, weapon: Weapon? = nil) {
     frameBuffer.clear(color: 0xFF000000)
     
     let columnsPerStrip = screenWidth / stripCount
@@ -44,6 +44,10 @@ public class Renderer {
           renderColoredColumn(x: x, rayResult: rayResult)
         }
       }
+    }
+    
+    if let weapon = weapon {
+      renderWeapon(weapon: weapon)
     }
   }
   
@@ -326,6 +330,42 @@ public class Renderer {
       
       y += skipFactor
       texPos += texStep * skipFactor
+    }
+  }
+  
+  private func renderWeapon(weapon: Weapon) {
+    guard let weaponTexture = textureManager.weaponTexture(name: weapon.getCurrentSpriteName()) else { return }
+    
+    /// Weapon takes up bottom center of screen
+    let weaponScale = 3
+    let weaponWidth = weaponTexture.width * weaponScale
+    let weaponHeight = weaponTexture.height * weaponScale
+    
+    /// Center horizontally, anchor to bottom
+    let startX = (screenWidth - weaponWidth) / 2
+    let startY = screenHeight - weaponHeight
+    
+    /// Draw weapon sprite with scaling
+    for y in 0..<weaponHeight {
+      let sourceY = y / weaponScale
+      guard sourceY < weaponTexture.height else { continue }
+      
+      for x in 0..<weaponWidth {
+        let sourceX = x / weaponScale
+        guard sourceX < weaponTexture.width else { continue }
+        
+        let destX = startX + x
+        let destY = startY + y
+        
+        guard destX >= 0 && destX < screenWidth && destY >= 0 && destY < screenHeight else { continue }
+        
+        let color = weaponTexture.sampleAtPixel(x: sourceX, y: sourceY)
+        
+        /// Skip transparent pixels (assuming black is transparent for weapon sprites)
+        if color != 0xFF000000 {
+          frameBuffer.setPixel(x: destX, y: destY, color: color)
+        }
+      }
     }
   }
 }

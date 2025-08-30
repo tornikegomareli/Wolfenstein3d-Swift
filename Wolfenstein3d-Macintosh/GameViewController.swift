@@ -89,6 +89,9 @@ class GameViewController: NSViewController {
     override func mouseDown(with event: NSEvent) {
         let location = view.convert(event.locationInWindow, from: nil)
         inputManager.mouseDown(at: location)
+        
+        /// Trigger shooting animation
+        gameEngine.shoot()
     }
     
     override func mouseDragged(with event: NSEvent) {
